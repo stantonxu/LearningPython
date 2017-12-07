@@ -23,3 +23,6 @@ print('-------')
 
 for user in sorted(users, key=attrgetter('user_id')):
     print(user)
+
+for user in sorted(users, key=attrgetter('name')):
+    print(user)
