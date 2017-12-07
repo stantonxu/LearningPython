@@ -1,13 +1,25 @@
-from PIL import Image
+from operator import attrgetter
 
-img1 = Image.open("sx1.JPG")
-img2 = Image.open("sx2.JPG")
-area = (10, 10, 1900, 1900)
-cropped_img1 = img1.crop(area)
-cropped_img2 = img2.crop(area)
+class User:
 
-r1, g1, b1 = cropped_img1.split()
-r2, g2, b2 = cropped_img2.split()
+    def __init__(self, x, y):
+        self.name = x
+        self.user_id = y
 
-new_img = Image.merge("RGB", (r1, g2, b2))
-new_img.show()
+    def __repr__(self):
+        return self.name + ":" + str(self.user_id)
+
+users = [
+    User('Bucky', 43),
+    User('Sally', 5),
+    User('Tuna', 61)
+]
+
+
+for user in users:
+    print(user)
+
+print('-------')
+
+for user in sorted(users, key=attrgetter('user_id')):
+    print(user)
