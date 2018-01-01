@@ -24,4 +24,4 @@ def factorial(n):
         factor += 1
     return result
 
-factorial(1)
+print(factorial(5))
