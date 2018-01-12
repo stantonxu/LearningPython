@@ -1,4 +1,4 @@
-while True:
+'''while True:
     try:
         number = int(input("What's your fav number hoss?\n"))
         print(18/number)
@@ -10,4 +10,10 @@ while True:
     except:
         break
     finally:
-        print("exiting the loop.")
+        print("exiting the loop.")'''
+
+
+x = 1
+y = 2
+z = x, y
+print(z)
