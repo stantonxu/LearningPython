@@ -2,11 +2,11 @@
 
 # Standard library imports
 import socket
+
 HOST = 'localhost'
 PORT = 50505
 SOCKET = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-stats = {
+STATS = {
     'PUT': {'success': 0, 'error': 0},
     'GET': {'success': 0, 'error': 0},
     'GETLIST': {'success': 0, 'error': 0},
@@ -15,17 +15,6 @@ stats = {
     'APPEND': {'success': 0, 'error': 0},
     'DELETE': {'success': 0, 'error': 0},
     'STATS': {'success': 0, 'error': 0}
-}
-
-COMMAND_HANDLERS = {
-    'PUT': 'handle_put',
-    'GET': 'handle_get',
-    'GETLIST': 'handle_getlist',
-    'PUTLIST': 'handle_putlist',
-    'INCREMENT': 'handle_increment',
-    'APPEND': 'handle_append',
-    'DELETE': 'handle_delete',
-    'STATS': 'handle_stats'
 }
 
 def parse_message(data):
@@ -110,6 +99,19 @@ def handle_stats():
     return (True, str(STATS))
 
 
+COMMAND_HANDLERS = {
+    'PUT': handle_put,
+    'GET': handle_get,
+    'GETLIST': handle_getlist,
+    'PUTLIST': handle_putlist,
+    'INCREMENT': handle_increment,
+    'APPEND': handle_append,
+    'DELETE': handle_delete,
+    'STATS': handle_stats
+}
+
+DATA = {}
+
 
 def main():
     '''Main entry point of script'''
@@ -128,11 +130,17 @@ def main():
             'INCREMENT',
             'DELETE'
         ):
+            response = COMMAND_HANDLERS[command](key)
+        elif command in (
+            'PUT',
+            'PUTLIST',
+            'APPEND'
+        ):
             response = COMMAND_HANDLERS[command](key, value)
         else:
             response = (False, 'Unknown command type [{}]'.format(command))
         update_stats(command, response[0])
-        connection.sendall('{};{}'.format(response[0], response[1]))
+        connection.sendall('{};{}'.format(response[0], response[1]).encode())
         connection.close()
 
 if __name__ == '__main__':
