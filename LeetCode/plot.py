@@ -6,6 +6,5 @@ def f(x):
 
 x1 = np.arange(1, 100, 0.01)
 
-plt.figure(1)
 plt.plot(x1, f(x1), 'bo')
 plt.show()
