@@ -14,7 +14,8 @@ STATS = {
     'INCREMENT': {'success': 0, 'error': 0},
     'APPEND': {'success': 0, 'error': 0},
     'DELETE': {'success': 0, 'error': 0},
-    'STATS': {'success': 0, 'error': 0}
+    'STATS': {'success': 0, 'error': 0},
+    'EXIT': {'success': 0, 'error': 0}
 }
 
 def parse_message(data):
@@ -117,9 +118,12 @@ def main():
     '''Main entry point of script'''
     SOCKET.bind((HOST, PORT))
     SOCKET.listen(1)
-    while 1:
-        connection, address = SOCKET.accept()
-        print("New connection from [{}]".format(address))
+    connection, address = SOCKET.accept()
+    print("New connection from [{}]".format(address))
+
+    command = ''
+
+    while command != 'EXIT':
         data = connection.recv(4096).decode()
         command, key, value = parse_message(data)
         if command == 'STATS':
@@ -137,11 +141,13 @@ def main():
             'APPEND'
         ):
             response = COMMAND_HANDLERS[command](key, value)
+        elif command == 'EXIT':
+            response = (True, 'Bye')
         else:
             response = (False, 'Unknown command type [{}]'.format(command))
         update_stats(command, response[0])
-        connection.sendall('{};{}'.format(response[0], response[1]).encode())
-        connection.close()
+        connection.sendall('{};{}\n'.format(response[0], response[1]).encode())
+    connection.close()
 
 if __name__ == '__main__':
     main()
