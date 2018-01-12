@@ -15,7 +15,7 @@ STATS = {
     'APPEND': {'success': 0, 'error': 0},
     'DELETE': {'success': 0, 'error': 0},
     'STATS': {'success': 0, 'error': 0},
-    'EXIT': {'success': 0, 'error': 0}
+    'EXIT': {'success': 0, 'error': 0} 
 }
 
 def parse_message(data):
