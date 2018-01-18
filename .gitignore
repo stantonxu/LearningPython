@@ -1,3 +1,6 @@
 .vscode/settings.json
 .vscode/launch.json
 *.pyc
+.DS_Store
+.project
+.pydevproject
